@@ -1,8 +1,73 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+body{
+  background: linear-gradient(160deg, #79a8e9, #1ff0c1);
+  height: 100%;
 }
 
-a {
-  color: #00B7FF;
+p,
+h1,
+h2,
+h3{
+  margin: 0 30% 0 30% ;
+  padding-top: 15px;
+}
+h1{
+  text-align: center;
+  margin-bottom: 2.5%;
+}
+
+
+.player1,
+.player2{
+  background-color: rgba(26, 26, 26, 0.3);
+  /*margin: 10% 25% 0 25%;
+  padding: 30px 2%;*/
+
+  text-align: center;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+
+.player1{
+  float: left;
+  width: 40%;
+  margin: 5% 5% 10% 5%;
+  height: 400px;
+}
+.player2{
+  float: left;
+  width: 40%;
+  margin: 5% 5% 10% 5%;
+  height: 400px;
+}
+
+.battlefield{
+  background-color: rgba(26, 26, 26, 0.6);
+  /*margin: 10% 25% 0 25%;
+  padding: 30px 2%;*/
+
+  text-align: center;
+  -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+  width: 70%;
+  margin: 5% 15% 10% 15%;
+  height: 300px;
+}
+.timer{
+  margin-right: 5%;
+  text-align: right;
+  font-size: larger;
+  font-weight: bold;
+}
+.cube{
+  /*float: left;*/
+  width: 10%;
+  background-color: rgba(0, 0, 26, 0.8);
+  height: 29px;
+  margin-bottom:1px;
+
 }
