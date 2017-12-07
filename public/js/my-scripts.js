@@ -25,17 +25,22 @@
 
     let p1 = document.querySelector("#battlefield1");//.player1 > #battlefield1');
     let p2 = document.querySelector("#battlefield2");//.player2 > #battlefield2');
-    console.log(p1);
 
     for (i = 0;i < w;i++)
         for (j = 0;j < h;j++){
             div1 = document.createElement("div");
-            console.log(div1);
             div1.id = i + '_' +j;
-            console.log(p1map[i*w+j]);
-            div1.className = 's'; //p1map[i*w+j] === 's' ? 's': 'w';
+            div1.className = (p1map[i*w+j] === 's') ? 's': 'w';
             p1.appendChild(div1);
+            div2 = document.createElement('div');
+            div2.className = (p2map[i*w+j] === 's') ? 's': 'w';
+            div2.onclick = function () {
+
+            };
+            p2.appendChild(div2);
         }
+
+
 
 
 })(10,10);
