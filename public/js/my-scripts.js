@@ -1,5 +1,4 @@
-/*
-/!*global document require*!/
+
 
 (function(w,h) {
     let p1map = ["~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
@@ -24,8 +23,8 @@
         "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
         "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"];
 
-    let p1 = document.querySelector("#p1");//.player1 > #battlefield1');
-    let p2 = document.querySelector("#p2");//.player2 > #battlefield2');
+    let p1 = document.querySelector("#battlefield1");//.player1 > #battlefield1');
+    let p2 = document.querySelector("#battlefield2");//.player2 > #battlefield2');
     console.log(p1);
 
     for (i = 0;i < w;i++)
@@ -39,4 +38,4 @@
         }
 
 
-})(10,10);*/
+})(10,10);
