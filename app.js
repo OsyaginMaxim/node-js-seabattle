@@ -5,13 +5,16 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
-var socket = require('socket.io')(http);
 var index = require('./routes/index');
 var users = require('./routes/users');
 var app = express();
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
 
-app.set('port', process.env.PORT || '8080');
 
+/*app.set('port', process.env.PORT || '8080');*/
+
+server.listen(8080);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -46,9 +49,31 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-http.createServer(app).listen(app.get('port'), function () {
-  console.log('Excpress server listen on port'+app.get('port'));
-    
+
+io.on('connection', function (socket) {
+  socket.on('disconnect',function () {
+      console.log('user disconnected');
+  })
+  socket.on('fire',function (data) {
+    console.log('fire');
+    socket.emit('isKill', data);
+  });
+  socket.on('kill',function (data) {
+    socket.emit('drowshipkill', data);
+  });
+  socket.on('notkill', function (data) {
+    socket.emit('drowshipnotkill', data)
+  });
+  console.log('a user connected');
 });
+
+
+
+/*http.createServer(app).listen(app.get('port'), function () {
+  console.log('Excpress server listen on port'+app.get('port'));
+
+});*/
+
+
 
 module.exports = app;

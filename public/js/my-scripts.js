@@ -1,3 +1,4 @@
+var socket = io();
 
 
 (function(w,h) {
@@ -35,10 +36,17 @@
             div2 = document.createElement('div');
             div2.className = (p2map[i*w+j] === 's') ? 's': 'w';
             div2.onclick = function () {
-
+              socket.emit('fire', {pound:'p1map[i][j]'});
             };
             p2.appendChild(div2);
         }
+
+        socket.on('isKill', function (data) {
+          if(isnotkillship(data)){
+              socket.emit('notkill', data);
+          }
+          socket.emit('kill', data);
+        })
 
 
 
