@@ -6,10 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
 var socket = require('socket.io')(http);
-
 var index = require('./routes/index');
 var users = require('./routes/users');
-
 var app = express();
 
 app.set('port', process.env.PORT || '8080');
