@@ -43,8 +43,12 @@ var socket = io();
 
     };
 
-    let p1 = document.querySelector("#battlefield1");//.player1 > #battlefield1');
-    let p2 = document.querySelector("#battlefield2");//.player2 > #battlefield2');
+    // if p1map[i][j] === 's'
+    //let drowshipkill =
+
+
+    let p1 = document.querySelector('#battlefield1');//.player1 > #battlefield1');
+    let p2 = document.querySelector('#battlefield2');//.player2 > #battlefield2');
     //console.log(p2map);
     for (i = 0;i < w;i++)
         for (j = 0;j < h;j++){
@@ -70,18 +74,45 @@ var socket = io();
                     console.log(isnotkillship(data));
                     if(isnotkillship(data)){
                         socket.emit('notkill', data);
-                        //console.log(data);
+                        console.log(data);
+                    }else {
+                        console.log(data);
+                        socket.emit('kill', data);
                     }
-                    //console.log(data);
-                    socket.emit('kill', data);
+                });
+                socket.on('drowshipkill', function (data) {
+                    console.log('kill');
+                    drowshipkill(data);
+
 
                 });
+                socket.on('drowshipnotkill', function (data) {
+
+
+                });
+
 
 
             };
         }
 
+        let drowshipkill = function (data) {
+            let p = JSON.parse(data);
+            let str = p.pound;
+            var arr = str.split('');
+            console.log(arr);
+            arr.splice(4,1,'1');
+            console.log(arr);
+            str = arr.join('');
 
+            console.log(typeof(str));
+            console.log(str);
+            let divC = document.getElementById(str);
+            //divC.className = 'd';
+            console.log(divC.className);
+            return true;
+
+        }
 
 
 

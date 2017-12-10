@@ -60,9 +60,11 @@ io.on('connection', function (socket) {
   });
   socket.on('kill',function (data) {
     socket.emit('drowshipkill', data);
+    console.log('kill');
   });
   socket.on('notkill', function (data) {
-    socket.emit('drowshipnotkill', data)
+    socket.emit('drowshipnotkill', data);
+    console.log('notkill');
   });
   console.log('a user connected');
 });
