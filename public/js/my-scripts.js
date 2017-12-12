@@ -25,7 +25,7 @@ var socket = io();
         "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
         "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"];
 
-    var isnotkillship = function(point){
+    /*var isnotkillship = function(point){
         var p = JSON.parse(point);
         //console.log(p);
         var str = p.pound;
@@ -41,7 +41,7 @@ var socket = io();
             return true;
         }
 
-    };
+    };*/
 
     // if p1map[i][j] === 's'
     //let drowshipkill =
@@ -59,11 +59,18 @@ var socket = io();
             // который будет устанавливать значения палуб т.е. p1map[i][j] = 's';
             p1.appendChild(div1);
             div2 = document.createElement("div");
+            div2.classList.add('div-onclick');
             // p2map.splice(1,1,'~'); - удаление эл-та на месте i=0,j=1 и замена его на другое значение
-            div2.className = (p2map[i][j] === 's') ? 's': 'w'; //p2map[i*w+j]
+            /*div2.className = (p2map[i][j] === 's') ? 's': 'w'; //p2map[i*w+j]*/
+            if (p2map[i][j] === 's'){
+                div2.classList.add('s');
+            }else{
+                div2.classList.add('w');
+            }
+
             div2.id = i + '_' +j + '-' + '2';
             p2.appendChild(div2);
-            div2.onclick = function () {
+          /*  div2.onclick = function () {
                 let ship = {};
                 ship ['pound'] = this.id;
                 //console.log(ship);
@@ -93,10 +100,12 @@ var socket = io();
 
 
 
-            };
+            };*/  //first onclick
         }
 
-        let drowshipkill = function (data) {
+
+
+        /*let drowshipkill = function (data) {
             let p = JSON.parse(data);
             let str = p.pound;
             var arr = str.split('');
@@ -112,7 +121,7 @@ var socket = io();
             console.log(divC.className);
             return true;
 
-        }
+        }*/  // drowshipkiil function
 
     //another way
 

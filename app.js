@@ -50,7 +50,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-io.on('connection', function (socket) {
+/*io.on('connection', function (socket) {
   socket.on('disconnect',function () {
       console.log('user disconnected');
   })
@@ -67,7 +67,7 @@ io.on('connection', function (socket) {
     console.log('notkill');
   });
   console.log('a user connected');
-});
+});*/  //socket
 
 
 
