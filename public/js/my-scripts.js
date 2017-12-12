@@ -114,6 +114,6 @@ var socket = io();
 
         }
 
-
+    //another way
 
 })(10,10);
