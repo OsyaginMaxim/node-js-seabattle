@@ -49,11 +49,11 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
-/*io.on('connection', function (socket) {
+/*
+io.on('connection', function (socket) {
   socket.on('disconnect',function () {
       console.log('user disconnected');
-  })
+  });
   socket.on('fire',function (data) {
     console.log('fire');
     socket.emit('isKill', data);
@@ -67,7 +67,21 @@ app.use(function(err, req, res, next) {
     console.log('notkill');
   });
   console.log('a user connected');
-});*/  //socket
+}); */ //socket
+io.on('connection', function (socket) {
+    console.log('new user connected');
+    socket.on('disconnect', function () {
+        console.log('user disconnected')
+    });
+    socket.on('attack', function (data) {
+        console.log('click',data);
+        socket.broadcast.emit('changeColor', data);
+        console.log('change',data);
+    })
+
+
+
+});
 
 
 
