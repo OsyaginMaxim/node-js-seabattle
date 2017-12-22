@@ -3,117 +3,166 @@ var socket = io();
 
 (function(w,h) {
 
-    let p1map = ["~", "~", "s", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"];
 
-    let p2map = ["~", "s", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"];
+    let config = {
 
-    var isnotkillship = function(point){
-        var p = JSON.parse(point);
-        //console.log(p);
-        var str = p.pound;
-        //console.log(str);
-        var arr = str.split('');
-        var i1 = arr.slice(0,1);
-        var j1 = arr.slice(2,3);
-        if(p1map[i1][j1] === 's'){
-            //console.log(p1map[i1][j1]);
-            return false;
-        }else{
-            //console.log(p1map[i1][j1]);
-            return true;
-        }
+        fieldClass: 'div-onclick',
+        nameField_1: 'battlefield1',
+        nameField_2: 'battlefield2',
 
     };
 
-    // if p1map[i][j] === 's'
-    //let drowshipkill =
+    let p1map = ["~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"];
+
+    let p2map = ["~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
+        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"];
 
 
-    let p1 = document.querySelector('#battlefield1');//.player1 > #battlefield1');
-    let p2 = document.querySelector('#battlefield2');//.player2 > #battlefield2');
-    //console.log(p2map);
-    for (i = 0;i < w;i++)
-        for (j = 0;j < h;j++){
+
+    let p1 = document.querySelector('#battlefield1');
+    let p2 = document.querySelector('#battlefield2');
+    for (i = 0;i < w;i++) {
+        for (j = 0; j < h; j++) {
             div1 = document.createElement("div");
-            div1.id = i + '-' +j + '-' + '1';
-            div1.className = (p1map[i][j] === 's') ? 's': 'w'; //p1map[i*w+j]
-            //на div1 нужно поставить обработчик onclick,
-            // который будет устанавливать значения палуб т.е. p1map[i][j] = 's';
+            div1.id = i + '-' + j + '-' + '1';
+            if (p1map[i][j] === 's') {
+                div1.classList.add('s');
+            } else {
+                div1.classList.add('w');
+            }
             p1.appendChild(div1);
             div2 = document.createElement("div");
-            // p2map.splice(1,1,'~'); - удаление эл-та на месте i=0,j=1 и замена его на другое значение
-            div2.className = (p2map[i][j] === 's') ? 's': 'w'; //p2map[i*w+j]
-            div2.id = i + '_' +j + '-' + '2';
+            if (p2map[i][j] === 's') {
+                div2.classList.add('s');
+            } else {
+                div2.classList.add('w');
+            }
+
+            div2.id = i + '-' + j + '-' + '2';
             p2.appendChild(div2);
-            div2.onclick = function () {
-                let ship = {};
-                ship ['pound'] = this.id;
-                //console.log(ship);
-                let stringJSON = JSON.stringify(ship);
-                //console.log(stringJSON);
-                socket.emit('fire', stringJSON);
-                socket.on('isKill', function (data) {
-                    console.log(isnotkillship(data));
-                    if(isnotkillship(data)){
-                        socket.emit('notkill', data);
-                        console.log(data);
-                    }else {
-                        console.log(data);
-                        socket.emit('kill', data);
-                    }
-                });
-                socket.on('drowshipkill', function (data) {
-                    console.log('kill');
-                    drowshipkill(data);
-
-
-                });
-                socket.on('drowshipnotkill', function (data) {
-
-
-                });
-
-
-
-            };
         }
+    }
 
-        let drowshipkill = function (data) {
-            let p = JSON.parse(data);
-            let str = p.pound;
-            var arr = str.split('');
-            console.log(arr);
-            arr.splice(4,1,'1');
-            console.log(arr);
-            str = arr.join('');
 
-            console.log(typeof(str));
-            console.log(str);
-            let divC = document.getElementById(str);
-            //divC.className = 'd';
-            console.log(divC.className);
-            return true;
+    function getElementForEvent(e) {
+        if(window.event){
+            return event.srcElement;
+        }else {
+            return e.target;
+        }
+        
+    }
+
+    function changeColor( e ) {
+        let id = getAnotherElementId(e);
+        console.log(document.querySelector("body"));
+        let el = document.getElementById(id);
+
+        console.log( id, el, 'element');
+
+
+        if(el.classList.contains( 'm' )){
+            el.classList.remove( 'm' );
+            el.classList.add( 'd' )
+        }else{
+            el.classList.add( 'g' );
+        }
+    }
+
+    function changeColorThis( e ) {
+        let id = getAnotherElementId(e);
+        console.log(document.querySelector("body"));
+        let el = document.getElementById(e.id);
+
+        console.log( id, el, 'element');
+
+
+        if(el.classList.contains( 's' )){
+            el.classList.remove( 's' );
+        }else{
+            el.classList.add( 'd' );
+        }
+    }
+
+
+    function isDivClick( e ) {
+        let elParent = e.parentNode;
+        if( elParent.className && (elParent.className.indexOf( config.fieldClass ) != -1) )
+            if(elParent.id === config.nameField_1)
+                return "1";//1 - мы находимся в battlefield1
+            if(elParent.id === config.nameField_2)
+                return "2";
+            return "0";
+    }
+
+    function getAnotherElementId( e ) {
+        if(e.parentNode.id === config.nameField_1){
+            let eid = e.id.split("");
+            eid.splice(4,1,"2");
+            let id = eid.join("");
+            console.log( "1->2");
+            return id;
+        }else{
+            let eid2 = e.id.split("");
+            eid2.splice(4,1,"1");
+            let id2 = eid2.join("");
+            console.log("2->1");
+            return id2;
+        }
+    }
+
+    socket.on('changeColor', function (data) {
+        let dat = document.getElementById(data);
+        changeColor( dat );
+    });
+
+    function inputShip(e){
+        console.log(document.querySelector("body"));
+        let el = document.getElementById(e.id);
+
+        console.log( el, 'element');
+
+        if(el.classList.contains( 'w' )){
+            el.classList.remove( 'w' );
+            el.classList.add( 'm' );
+        }else{
+            el.classList.add( 'w' );
+        }
+    }
+
+    document.body.onclick = function ( e ) {
+        let el = getElementForEvent(e);
+        switch(isDivClick(el)){
+            case "1": // ввод караблей
+                inputShip(el);
+                break;
+            case "2": //атака противника
+                let data = el.id;
+                socket.emit('attack',data);
+                changeColorThis(el);
+                break;
+            case "0":
+                break;
 
         }
-
-
+        
+    }
 
 })(10,10);

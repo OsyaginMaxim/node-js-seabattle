@@ -1,5 +1,5 @@
 body{
-  background: linear-gradient(160deg, #79a8e9, #1ff0c1);
+  background: linear-gradient(160deg, #ace3e9, #b7f09a);
   height: 100%;
 }
 
@@ -88,6 +88,10 @@ h1{
   background-color: red;
 }
 .m{
+  background-color: blue;
+}
+
+.g{
   background-color: gray;
 }
 #battlefield1 div, #battlefield2 div{
