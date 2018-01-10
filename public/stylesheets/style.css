@@ -81,17 +81,17 @@ h1{
 #battlefield2 .s{
   background-color: #222;
 }
-.w{
+.none{
   background-color: white;
 }
-.d{
+.dead{
   background-color: red;
 }
-.m{
+.ship{
   background-color: blue;
 }
 
-.g{
+.miss{
   background-color: gray;
 }
 #battlefield1 div, #battlefield2 div{

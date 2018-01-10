@@ -55,7 +55,15 @@ io.on('connection', function (socket) {
         console.log('click',data);
         socket.broadcast.emit('changeColor', data);
         console.log('change',data);
-    })
+    });
+    socket.on('dead', function (data) {
+        console.log('hit');
+        socket.broadcast.emit('colorRed', data);
+    });
+    socket.on('loose', function (data) {
+        socket.broadcast.emit('colorGray', data);
+        console.log('loose');
+    });
 
 
 

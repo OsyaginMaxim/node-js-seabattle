@@ -35,7 +35,6 @@ var socket = io();
         "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"];
 
 
-
     let p1 = document.querySelector('#battlefield1');
     let p2 = document.querySelector('#battlefield2');
     for (i = 0;i < w;i++) {
@@ -45,14 +44,14 @@ var socket = io();
             if (p1map[i][j] === 's') {
                 div1.classList.add('s');
             } else {
-                div1.classList.add('w');
+                div1.classList.add('none');
             }
             p1.appendChild(div1);
             div2 = document.createElement("div");
             if (p2map[i][j] === 's') {
                 div2.classList.add('s');
             } else {
-                div2.classList.add('w');
+                div2.classList.add('none');
             }
 
             div2.id = i + '-' + j + '-' + '2';
@@ -70,34 +69,20 @@ var socket = io();
         
     }
 
-    function changeColor( e ) {
+    function changeColorThisRed( e ) {
         let id = getAnotherElementId(e);
-        console.log(document.querySelector("body"));
-        let el = document.getElementById(id);
-
-        console.log( id, el, 'element');
-
-
-        if(el.classList.contains( 'm' )){
-            el.classList.remove( 'm' );
-            el.classList.add( 'd' )
-        }else{
-            el.classList.add( 'g' );
-        }
+        let el = document.getElementById(e.id);
+        console.log( id, el, 'element is red');
+        el.classList.add( 'dead' );
     }
 
-    function changeColorThis( e ) {
+    function changeColorThisGray( e ) {
         let id = getAnotherElementId(e);
-        console.log(document.querySelector("body"));
         let el = document.getElementById(e.id);
-
-        console.log( id, el, 'element');
-
-
-        if(el.classList.contains( 's' )){
-            el.classList.remove( 's' );
-        }else{
-            el.classList.add( 'd' );
+        console.log( id, el, 'element is gray');
+        if(el.classList.contains( 'none' )) {
+            el.classList.remove('none');
+            el.classList.add('miss');
         }
     }
 
@@ -128,35 +113,63 @@ var socket = io();
         }
     }
 
+    function changeColor( e ) {
+        let id = getAnotherElementId(e);
+        let el = document.getElementById(id);
+        console.log( id, el, 'element');
+        if(el.classList.contains( 'ship' )){
+            el.classList.remove( 'ship' );
+            el.classList.add( 'dead' );
+            return true;
+        }else{
+            el.classList.remove( 'none' );
+            el.classList.add( 'miss' );
+            return false;
+        }
+    }
+
     socket.on('changeColor', function (data) {
         let dat = document.getElementById(data);
-        changeColor( dat );
+        if(changeColor( dat )) {
+            console.log('if dead');
+            socket.emit('dead', data);
+        }else{
+            console.log('if loose');
+            socket.emit('loose', data);
+        }
+    });
+
+    socket.on('colorRed', function (data) {
+        console.log('colorRed work');
+        let dataElement = document.getElementById(data);
+        changeColorThisRed(dataElement);
+    });
+
+    socket.on('colorGray', function (data) {
+        console.log('colorGray work');
+        let dataElement = document.getElementById(data);
+        changeColorThisGray(dataElement);
     });
 
     function inputShip(e){
-        console.log(document.querySelector("body"));
         let el = document.getElementById(e.id);
-
-        console.log( el, 'element');
-
-        if(el.classList.contains( 'w' )){
-            el.classList.remove( 'w' );
-            el.classList.add( 'm' );
+        if(el.classList.contains( 'none' )){
+            el.classList.remove( 'none' );
+            el.classList.add( 'ship' );
         }else{
-            el.classList.add( 'w' );
+            el.classList.add( 'none' );
         }
     }
 
     document.body.onclick = function ( e ) {
         let el = getElementForEvent(e);
         switch(isDivClick(el)){
-            case "1": // ввод караблей
+            case "1": // ввод кораблей
                 inputShip(el);
                 break;
             case "2": //атака противника
                 let data = el.id;
                 socket.emit('attack',data);
-                changeColorThis(el);
                 break;
             case "0":
                 break;
