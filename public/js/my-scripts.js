@@ -3,6 +3,8 @@ var socket = io();
 
 (function(w,h) {
 
+    let countForInputShips = 20;
+    let countOfDeadSips = 20;
 
     let config = {
 
@@ -12,70 +14,72 @@ var socket = io();
 
     };
 
-    let p1map = ["~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"];
-
-    let p2map = ["~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~",
-        "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"];
-
-
     let p1 = document.querySelector('#battlefield1');
     let p2 = document.querySelector('#battlefield2');
     for (i = 0;i < w;i++) {
         for (j = 0; j < h; j++) {
             div1 = document.createElement("div");
             div1.id = i + '-' + j + '-' + '1';
-            if (p1map[i][j] === 's') {
-                div1.classList.add('s');
-            } else {
-                div1.classList.add('none');
-            }
+            div1.classList.add('none');
             p1.appendChild(div1);
             div2 = document.createElement("div");
-            if (p2map[i][j] === 's') {
-                div2.classList.add('s');
-            } else {
-                div2.classList.add('none');
-            }
-
+            div2.classList.add('none');
             div2.id = i + '-' + j + '-' + '2';
             p2.appendChild(div2);
         }
     }
-
-
-    function getElementForEvent(e) {
-        if(window.event){
-            return event.srcElement;
-        }else {
-            return e.target;
+    //input(paint) ship on the 1 player's table
+    //if the square is white then add class 'ship' in current square
+    function inputShip(e){
+        let el = document.getElementById(e.id);
+        if(countForInputShips){
+            if(el.classList.contains( 'none' )){
+                el.classList.remove( 'none' );
+                el.classList.add( 'ship' );
+                countForInputShips = countForInputShips - 1;
+            }else if(el.classList.contains( 'ship' )){
+                el.classList.remove( 'ship' );
+                el.classList.add( 'none' );
+                countForInputShips = countForInputShips + 1;
+            }
+        }else if(el.classList.contains( 'ship' )){
+            el.classList.remove( 'ship' );
+            el.classList.add( 'none' );
+            countForInputShips = countForInputShips + 1;
         }
-        
     }
-
+    //paint the square on 1 player's table('red' if other player hits, else 'gray' if other player loose)
+    //if the square has class 'ship' then remove 'ship' and add class 'dead'
+    //return true (hit)
+    //if the square has class 'none' then remove 'none' and add class'miss'
+    //return false (loose)
+    function changeColor( e ) {
+        let id = getAnotherElementId(e);
+        let el = document.getElementById(id);
+        console.log( id, el, 'element');
+        if(el.classList.contains( 'ship' )){
+            el.classList.remove( 'ship' );
+            el.classList.add( 'dead' );
+            return true;
+        }else{
+            el.classList.remove( 'none' );
+            el.classList.add( 'miss' );
+            return false;
+        }
+    }
+    //paint the square on 2 player's table if current player hit
     function changeColorThisRed( e ) {
         let id = getAnotherElementId(e);
         let el = document.getElementById(e.id);
         console.log( id, el, 'element is red');
         el.classList.add( 'dead' );
+        countOfDeadSips = countOfDeadSips - 1;
+        if(countOfDeadSips === 0){
+            socket.emit('win');
+            alert("You wins!");
+        }
     }
-
+    //paint the square on 2 player's table if current player miss
     function changeColorThisGray( e ) {
         let id = getAnotherElementId(e);
         let el = document.getElementById(e.id);
@@ -86,7 +90,6 @@ var socket = io();
         }
     }
 
-
     function isDivClick( e ) {
         let elParent = e.parentNode;
         if( elParent.className && (elParent.className.indexOf( config.fieldClass ) != -1) )
@@ -95,6 +98,15 @@ var socket = io();
             if(elParent.id === config.nameField_2)
                 return "2";
             return "0";
+    }
+
+    function getElementForEvent(e) {
+        if(window.event){
+            return event.srcElement;
+        }else {
+            return e.target;
+        }
+
     }
 
     function getAnotherElementId( e ) {
@@ -113,20 +125,7 @@ var socket = io();
         }
     }
 
-    function changeColor( e ) {
-        let id = getAnotherElementId(e);
-        let el = document.getElementById(id);
-        console.log( id, el, 'element');
-        if(el.classList.contains( 'ship' )){
-            el.classList.remove( 'ship' );
-            el.classList.add( 'dead' );
-            return true;
-        }else{
-            el.classList.remove( 'none' );
-            el.classList.add( 'miss' );
-            return false;
-        }
-    }
+
 
     socket.on('changeColor', function (data) {
         let dat = document.getElementById(data);
@@ -151,15 +150,11 @@ var socket = io();
         changeColorThisGray(dataElement);
     });
 
-    function inputShip(e){
-        let el = document.getElementById(e.id);
-        if(el.classList.contains( 'none' )){
-            el.classList.remove( 'none' );
-            el.classList.add( 'ship' );
-        }else{
-            el.classList.add( 'none' );
-        }
-    }
+    socket.on('gameOver', function () {
+        alert('you loose!');
+    });
+
+
 
     document.body.onclick = function ( e ) {
         let el = getElementForEvent(e);
@@ -173,9 +168,7 @@ var socket = io();
                 break;
             case "0":
                 break;
-
         }
-        
     }
 
 })(10,10);

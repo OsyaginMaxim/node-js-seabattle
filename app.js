@@ -64,6 +64,9 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('colorGray', data);
         console.log('loose');
     });
+    socket.on('win', function () {
+        socket.broadcast.emit('gameOver');
+    })
 
 
 
